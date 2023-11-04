@@ -20,6 +20,8 @@ def decode(filename:str):
     with open(f'./{filename}.json','w') as json_file:
         jdf(l,json_file)
 
+    # return l
+
 def encode(filename:str):
     with open(f'./{filename}.json','r') as json_file:
         l=jlf(json_file)
@@ -27,7 +29,7 @@ def encode(filename:str):
     for p in range(len(l)):
         print(f'\npart {p}')
         part=l[p]
-        j=jds(part).encode()
+        j=jds(part,separators=(',',':'),ensure_ascii=False).encode()
         d=bytes([j[i]^key[i%16] for i in range(len(j))])
         print(f'encrypted length: {len(d)}')
         s=b64.b64encode(d).decode()
@@ -35,6 +37,8 @@ def encode(filename:str):
         l[p]=s
     with open(f'./{filename}.pcsave','w') as save_file:
         save_file.write('\n'.join(l))
+
+    # return l
 
 if __name__=='__main__':
     save_name=input('save name ?= ')
